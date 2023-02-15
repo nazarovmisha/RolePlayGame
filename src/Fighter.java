@@ -1,3 +1,3 @@
 public interface Fighter {
-    public void fight();
+    public int fight();
 }
