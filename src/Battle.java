@@ -21,13 +21,19 @@ public class Battle {
             System.out.printf("У %s осталось %d единиц здоровья!%n", defender.getName(), defenderHealth);
         } else {
             System.out.printf("%s промахнулся, урона нет!", attacker.getName());
-        }if (defenderHealth<=0&&defender instanceof Hero){
+        }
+        if (defenderHealth <= 0 && defender instanceof Hero) {
             System.out.println("Вы пали в бою!Враг победил!!!");
-        }else if(defenderHealth<=0){
+            return true;
+        } else if (defenderHealth <= 0) {
             System.out.println("Враг повержен! Пир на весь мир!!!");
             System.out.printf("Вы получаете %d единиц опыта и %d единиц золота%n", defender.getExperience(), defender.getGold());
-
+           attacker.setGold(attacker.getGold()+defender.getGold());
+           attacker.setExperience(attacker.getExperience()+attacker.getExperience());
+            return true;
+        } else {
+            defender.setHealth(defenderHealth);
+            return false;
         }
-        return false;
     }
 }
