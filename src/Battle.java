@@ -17,8 +17,8 @@ public class Battle {
 int hit = attacker.fight();
 int defenderHealth = defender.getHealth()-hit;
 if (hit !=0){
-    System.out.println(String.format("%s атаковал, удар %d единиц здоровья!", attacker.getName(), hit));
-    System.out.println(String.format("У %d осталось %s единиц здоровья!", defender.getName(), defenderHealth));
+    System.out.printf("%s атаковал, удар %d единиц здоровья!%n", attacker.getName(), hit);
+    System.out.printf("У %s осталось %d единиц здоровья!%n", defender.getName(), defenderHealth);
 }
         return false;
     }
