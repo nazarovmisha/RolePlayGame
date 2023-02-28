@@ -21,6 +21,9 @@ public class Game {
     public static void command(String string) throws IOException {
         if (player == null) {
             player = new Hero(string, 100, 0, 20, 0, 20);
+            System.out.println(String.format("Спасти наш мир от драконов вызвался %s!" +
+                    " Да будет его броня крепка и бицепс кругл!", player.getName()));
+            printNavigation();
             switch (string) {
                 case "1":
                     System.out.println("Нет его!");
@@ -36,13 +39,16 @@ public class Game {
                     command("2");
                     break;
                 case "нет":
+                    printNavigation();
                     command(br.readLine());
             }
         }
+        command(br.readLine());
     }
 
     public static void goAndFight() {
-        battle.fight(createMonster(), player, new Game() {
+        battle.fight(createMonster(), player, new FightCallback() {
+            @Override
             public void winFight() {
                 System.out.printf("%s победил!!! Ты получаешь %d золота, %d опыта. У тебя осталось %s здоровья!%n",
                         player.getName(), player.getGold(), player.getHealth());
@@ -52,7 +58,7 @@ public class Game {
                     throw new RuntimeException(e);
                 }
             }
-
+            @Override
             public void lostFight() {
             }
         });
@@ -65,10 +71,9 @@ public class Game {
         } else {
             return new Skeleton("Скелет!", 75, 30, 20, 20, 20);
         }
-
     }
 
-    public void printNavigation() {
+    public static void printNavigation() {
         System.out.println("Чем займемся?");
         System.out.println("1. К торговцу");
         System.out.println("2. В бой");

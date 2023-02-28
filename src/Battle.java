@@ -1,17 +1,25 @@
 public class Battle {
-    public void fight(Entity monster, Entity hero, Game game) {
-        int turn = 1;
-        boolean isFightEnded = false;
-        while (!isFightEnded) {
-            System.out.println("Ход" + turn + "!!!");
+    public void fight(Entity monster, Entity hero, FightCallback fightCallback) {
+        Runnable runnable = () -> {
+            int turn = 1;
+            boolean isFightEnded = false;
+            while (!isFightEnded) {
+                System.out.println("Ход" + turn + "!!!");
+                try {
 
-            if (turn++ % 2 != 0) {
-                isFightEnded = makeHit(monster, hero);
-            } else {
-                isFightEnded = makeHit(hero, monster);
+                    if (turn++ % 2 != 0) {
+                        isFightEnded = makeHit(monster, hero);
+                    } else {
+                        isFightEnded = makeHit(hero, monster);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
-        }
+        };
     }
+
+
 
     public boolean makeHit(Entity attacker, Entity defender) {
         int hit = attacker.fight();
@@ -28,8 +36,8 @@ public class Battle {
         } else if (defenderHealth <= 0) {
             System.out.println("Враг повержен! Пир на весь мир!!!");
             System.out.printf("Вы получаете %d единиц опыта и %d единиц золота%n", defender.getExperience(), defender.getGold());
-           attacker.setGold(attacker.getGold()+defender.getGold());
-           attacker.setExperience(attacker.getExperience()+attacker.getExperience());
+            attacker.setGold(attacker.getGold() + defender.getGold());
+            attacker.setExperience(attacker.getExperience() + attacker.getExperience());
             return true;
         } else {
             defender.setHealth(defenderHealth);
