@@ -1,5 +1,5 @@
 public class Battle {
-    public void fight(Entity monster, Entity hero) {
+    public void fight(Entity monster, Entity hero, Game game) {
         int turn = 1;
         boolean isFightEnded = false;
         while (!isFightEnded) {

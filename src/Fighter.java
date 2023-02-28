@@ -1,3 +1,5 @@
 public interface Fighter {
-    public int fight();
+    default int fight() {
+        return 0;
+    }
 }
