@@ -1,27 +1,35 @@
+import javax.security.sasl.RealmCallback;
+
 public class Battle {
-    public void fight(Entity monster, Entity hero, FightCallback fightCallback) {
+    public void fight(Entity monster, Entity hero, Realm.FightCallback fightCallback) {
         Runnable runnable = () -> {
             int turn = 1;
             boolean isFightEnded = false;
             while (!isFightEnded) {
                 System.out.println("Ход" + turn + "!!!");
-                try {
+
 
                     if (turn++ % 2 != 0) {
                         isFightEnded = makeHit(monster, hero);
                     } else {
                         isFightEnded = makeHit(hero, monster);
                     }
-                } catch (Exception e) {
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }
         };
+        Thread thread = new Thread(runnable);
+        thread.start();
     }
 
 
 
-    public boolean makeHit(Entity attacker, Entity defender) {
+
+    private boolean makeHit(Entity attacker, Entity defender) {
         int hit = attacker.fight();
         int defenderHealth = defender.getHealth() - hit;
         if (hit != 0) {
@@ -32,16 +40,20 @@ public class Battle {
         }
         if (defenderHealth <= 0 && defender instanceof Hero) {
             System.out.println("Вы пали в бою!Враг победил!!!");
+            fightCallback.lostFight();
             return true;
         } else if (defenderHealth <= 0) {
             System.out.println("Враг повержен! Пир на весь мир!!!");
             System.out.printf("Вы получаете %d единиц опыта и %d единиц золота%n", defender.getExperience(), defender.getGold());
             attacker.setGold(attacker.getGold() + defender.getGold());
             attacker.setExperience(attacker.getExperience() + attacker.getExperience());
+            winFight();
             return true;
         } else {
             defender.setHealth(defenderHealth);
             return false;
         }
     }
+
+
 }

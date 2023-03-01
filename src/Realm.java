@@ -2,7 +2,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Game {
+public class Realm {
     private static BufferedReader br;
     private static Battle battle = null;
     private static Entity player = null;
@@ -25,31 +25,37 @@ public class Game {
                     " Да будет его броня крепка и бицепс кругл!", player.getName()));
             printNavigation();
             switch (string) {
-                case "1":
+                case "1": {
                     System.out.println("Нет его!");
                     command(br.readLine());
-                    break;
-                case "2":
+                }
+                break;
+
+                case "2": {
                     goAndFight();
-                    break;
-                case "3":
+                }
+                break;
+                case "3": {
                     System.exit(1);
-                    break;
-                case "да":
+                }
+                break;
+                case "да": {
                     command("2");
-                    break;
-                case "нет":
+                }
+                break;
+                case "нет": {
                     printNavigation();
                     command(br.readLine());
+                }
             }
         }
         command(br.readLine());
     }
 
-    public static void goAndFight() {
+    private void goAndFight() {
         battle.fight(createMonster(), player, new FightCallback() {
             @Override
-            public void winFight() {
+            public  void winFight() {
                 System.out.printf("%s победил!!! Ты получаешь %d золота, %d опыта. У тебя осталось %s здоровья!%n",
                         player.getName(), player.getGold(), player.getHealth());
                 try {
@@ -58,6 +64,7 @@ public class Game {
                     throw new RuntimeException(e);
                 }
             }
+
             @Override
             public void lostFight() {
             }

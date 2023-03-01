@@ -1,4 +1,6 @@
-public interface FightCallback {
-    void  winFight();
+interface FightCallback {
+    void winFight();
+
+
     void lostFight();
 }

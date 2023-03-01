@@ -17,7 +17,7 @@ public class Entity implements Fighter {
 
     @Override
     public int fight() {
-        if (dexterity * 2 > (int) (Math.random() * 100)) {
+        if ((dexterity * 2) > (int) (Math.random() * 100)) {
             return powerAttack;
         } else {
             return 0;
