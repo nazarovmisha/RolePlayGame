@@ -1,7 +1,7 @@
 import javax.security.sasl.RealmCallback;
 
 public class Battle {
-    public void fight(Entity monster, Entity hero, Realm.FightCallback fightCallback) {
+    public static void fight(Entity monster, Entity hero, Realm.FightCallback fightCallback) {
         Runnable runnable = () -> {
             int turn = 1;
             boolean isFightEnded = false;
@@ -29,7 +29,7 @@ public class Battle {
 
 
 
-    private boolean makeHit(Entity attacker, Entity defender) {
+    private static boolean makeHit(Entity attacker, Entity defender) {
         int hit = attacker.fight();
         int defenderHealth = defender.getHealth() - hit;
         if (hit != 0) {
@@ -47,7 +47,7 @@ public class Battle {
             System.out.printf("Вы получаете %d единиц опыта и %d единиц золота%n", defender.getExperience(), defender.getGold());
             attacker.setGold(attacker.getGold() + defender.getGold());
             attacker.setExperience(attacker.getExperience() + attacker.getExperience());
-            winFight();
+            fightCallback.winFight();
             return true;
         } else {
             defender.setHealth(defenderHealth);

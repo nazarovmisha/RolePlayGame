@@ -86,4 +86,9 @@ public class Realm {
         System.out.println("2. В бой");
         System.out.println("3. Выходим");
     }
+
+    public interface FightCallback {
+        void winFight();
+        void lostFight();
+    }
 }
