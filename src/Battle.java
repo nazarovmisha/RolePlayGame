@@ -1,4 +1,3 @@
-import javax.security.sasl.RealmCallback;
 
 public class Battle {
     public void fight(Entity monster, Entity hero, Realm.FightCallback fightCallback) {

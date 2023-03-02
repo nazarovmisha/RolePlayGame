@@ -21,43 +21,37 @@ public class Realm {
     private static void command(String string) throws IOException {
         if (player == null) {
             player = new Hero(string, 100, 0, 20, 0, 20);
-            System.out.println(String.format("Спасти наш мир от драконов вызвался %s!" +
-                    " Да будет его броня крепка и бицепс кругл!", player.getName()));
+            System.out.printf("Спасти наш мир от драконов вызвался %s!" +
+                    " Да будет его броня крепка и бицепс кругл!%n", player.getName());
             printNavigation();
         }
-            switch (string) {
-                case "1": {
-                    System.out.println("Нет его!");
-                    command(br.readLine());
-                }
-                break;
+        switch (string) {
+            case "1" -> {
+                System.out.println("Что-будем покупать?");
+              switch (br.readLine()){
 
-                case "2": {
-                    goAndFight();
-                }
-                break;
-                case "3": {
-                    System.exit(1);
-                }
-                break;
-                case "да": {
-                    command("2");
-                }
-                break;
-                case "нет": {
-                    printNavigation();
-                    command(br.readLine());
-                }
+              }
             }
-        command(br.readLine());
+            case "2" -> goAndFight();
+            case "3" -> System.exit(1);
+
+            case "да" -> command("2");
+
+            case "нет" -> {
+            printNavigation();
+            command(br.readLine());
+        }
     }
+
+    command(br.readLine());
+}
 
     private static void goAndFight() {
         battle.fight(createMonster(), player, new FightCallback() {
             @Override
-            public  void winFight() {
-                System.out.println(String.format("%s победил!!! Ты получаешь %d золота, %d опыта. У тебя осталось %s здоровья!",
-                        player.getName(), player.getGold(),player.getExperience(), player.getHealth()));
+            public void winFight() {
+                System.out.printf("%s победил!!! Ты получаешь %d золота, %d опыта. У тебя осталось %s здоровья!",
+                        player.getName(), player.getGold(), player.getExperience(), player.getHealth());
                 System.out.println("Желаете продолжить поход или вернуться в город? (да/нет)");
                 try {
                     command(br.readLine());
@@ -71,7 +65,9 @@ public class Realm {
             }
         });
     }
-
+public static Entity createFightSeller(){
+        return new Seller("Торговец", 200, 500, 50, 100, 100);
+}
     public static Entity createMonster() {
         int random = (int) (Math.random() * 10);
         if (random % 10 == 0) {
@@ -88,8 +84,9 @@ public class Realm {
         System.out.println("3. Выходим");
     }
 
-    public interface FightCallback {
-        void winFight();
-        void lostFight();
-    }
+public interface FightCallback {
+    void winFight();
+
+    void lostFight();
+}
 }
