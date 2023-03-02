@@ -18,12 +18,13 @@ public class Realm {
         }
     }
 
-    public static void command(String string) throws IOException {
+    private static void command(String string) throws IOException {
         if (player == null) {
             player = new Hero(string, 100, 0, 20, 0, 20);
             System.out.println(String.format("Спасти наш мир от драконов вызвался %s!" +
                     " Да будет его броня крепка и бицепс кругл!", player.getName()));
             printNavigation();
+        }
             switch (string) {
                 case "1": {
                     System.out.println("Нет его!");
@@ -48,16 +49,16 @@ public class Realm {
                     command(br.readLine());
                 }
             }
-        }
         command(br.readLine());
     }
 
-    private void goAndFight() {
+    private static void goAndFight() {
         battle.fight(createMonster(), player, new FightCallback() {
             @Override
             public  void winFight() {
-                System.out.printf("%s победил!!! Ты получаешь %d золота, %d опыта. У тебя осталось %s здоровья!%n",
-                        player.getName(), player.getGold(), player.getHealth());
+                System.out.println(String.format("%s победил!!! Ты получаешь %d золота, %d опыта. У тебя осталось %s здоровья!",
+                        player.getName(), player.getGold(),player.getExperience(), player.getHealth()));
+                System.out.println("Желаете продолжить поход или вернуться в город? (да/нет)");
                 try {
                     command(br.readLine());
                 } catch (IOException e) {

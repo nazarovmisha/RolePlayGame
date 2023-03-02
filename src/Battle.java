@@ -1,18 +1,17 @@
 import javax.security.sasl.RealmCallback;
 
 public class Battle {
-    public static void fight(Entity monster, Entity hero, Realm.FightCallback fightCallback) {
+    public void fight(Entity monster, Entity hero, Realm.FightCallback fightCallback) {
         Runnable runnable = () -> {
             int turn = 1;
             boolean isFightEnded = false;
             while (!isFightEnded) {
                 System.out.println("Ход" + turn + "!!!");
 
-
                     if (turn++ % 2 != 0) {
-                        isFightEnded = makeHit(monster, hero);
+                        isFightEnded = makeHit(monster, hero, fightCallback);
                     } else {
-                        isFightEnded = makeHit(hero, monster);
+                        isFightEnded = makeHit(hero, monster, fightCallback);
                     }
 
                 try {
@@ -28,8 +27,7 @@ public class Battle {
 
 
 
-
-    private static boolean makeHit(Entity attacker, Entity defender) {
+    private  boolean makeHit(Entity attacker, Entity defender, Realm.FightCallback fightCallback) {
         int hit = attacker.fight();
         int defenderHealth = defender.getHealth() - hit;
         if (hit != 0) {
@@ -54,6 +52,4 @@ public class Battle {
             return false;
         }
     }
-
-
 }
