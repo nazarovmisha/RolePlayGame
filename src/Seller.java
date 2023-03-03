@@ -3,23 +3,25 @@ public class Seller extends Entity {
         super(name, health, gold, dexterity, experience, powerAttack);
     }
 
-    public static void sellGoods(String string){
+    public static void sellGoods(String string) {
         System.out.println("Нападем на торговца или будем что-то покупать? да/нет?");
 
-        switch (string){
-            case "нет"-> sell();
+        switch (string) {
+            case "нет" -> sell();
 
         }
     }
-    public static void sell(){
+
+    public static void sell() {
         System.out.println("Что будум покупать?");
-        }
-    }
-
-    enum Goods{
-        POTIONS("Зелье");
-
-        Goods(String товар) {
-        }
     }
 }
+
+enum Goods {
+    POTIONS("Зелье");
+
+    Goods(String enumSeller) {
+    }
+}
+
+
