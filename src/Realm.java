@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.EnumSet;
 
 public class Realm {
     private static BufferedReader br;
@@ -20,14 +21,15 @@ public class Realm {
 
     public static void command(String string) {
         if (player == null) {
-            player = new Hero(string, 100, 0, 20, 0, 20);
+            player = new Hero(string, 100, 0, 30, 0, 37);
             System.out.printf("Спасти наш мир от драконов вызвался %s!" +
                     " Да будет его броня крепка и бицепс кругл!%n", player.getName());
             printNavigation();
         }
         switch (string) {
-            case "1" ->
-                    System.out.println("Купим  " + Seller.Goods.POTIONS + "  стоит 30 монет, дает 50 Xp или нападаем?(купим/нападаем)");
+            case "1" -> {
+                System.out.println(Seller.Goods.POTIONS + " стоит 30 монет, дает 50 Xp или нападаем?(купим/нападаем)");
+            System.out.println("У тебя " + player.getGold() + " монет и " + player.getHealth() + " единиц здоровья"); }
             case "купим" -> {
                 if (player.getGold() >= 30) {
                     try {
@@ -35,13 +37,17 @@ public class Realm {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+                    printNavigation();
+                    try {
+                        command(br.readLine());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 } else {
-                    System.out.printf("У тебя %s монет, для покупки не хватает %n" + (30 - player.getGold())
-                            + "монет", player.getGold());
+                    System.out.printf("У тебя %s монет, для покупки не хватает %n" + (30 - player.getGold()) + "  монет%n", player.getGold());
                     System.out.println("В город или нападем(в город/нападем)?");
                 }
             }
-
             case "в город", "нет" -> {
                 printNavigation();
                 try {
@@ -51,16 +57,11 @@ public class Realm {
                 }
             }
             case "нападаем" -> {
-                return;
+                goAndFight(createFightSeller());
             }
-            case "2" -> goAndFight();
+            case "2" -> goAndFight(createMonster());
             case "3" -> System.exit(1);
             case "да" -> command("2");
-            //            case default -> {
-//                System.out.println("Не понимаю, давай сначала");
-//                printNavigation();
-//                command(br.readLine());
-//            }
         }
         try {
             command(br.readLine());
@@ -69,8 +70,8 @@ public class Realm {
         }
     }
 
-    private static void goAndFight() {
-        battle.fight(createMonster(), player, new FightCallback() {
+    private static void goAndFight(Entity create) {
+        battle.fight(create, player, new FightCallback() {
             @Override
             public void winFight() {
                 System.out.printf("%s победил!!! Ты получаешь %d золота, %d опыта. У тебя осталось %s здоровья!",

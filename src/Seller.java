@@ -9,15 +9,23 @@ public class Seller extends Entity {
     public static void sell(Entity player) throws IOException {
         player.setHealth(player.getHealth() + 50);
         player.setGold(player.getGold() - 30);
-        System.out.printf("");
-        System.out.println();
+        System.out.printf("Ты выпил зелье, у тебя %S единиц здоровья и %S монет%n", player.getHealth(), player.getGold());
     }
 
-
     enum Goods {
-        POTIONS("Зелье");
-        Goods(String enumSeller) {
+       POTIONS("Зелье");
+
+
+        private final String textRepresentation;
+
+        private Goods(String textRepresentation) {
+            this.textRepresentation = textRepresentation;
         }
+
+        @Override public String toString() {
+            return textRepresentation;
+        }
+
     }
 }
 

@@ -6,7 +6,6 @@ public class Battle {
             boolean isFightEnded = false;
             while (!isFightEnded) {
                 System.out.println("Ход" + turn + "!!!");
-
                     if (turn++ % 2 != 0) {
                         isFightEnded = makeHit(monster, hero, fightCallback);
                     } else {
@@ -23,8 +22,6 @@ public class Battle {
         Thread thread = new Thread(runnable);
         thread.start();
     }
-
-
 
     private  boolean makeHit(Entity attacker, Entity defender, Realm.FightCallback fightCallback) {
         int hit = attacker.fight();
