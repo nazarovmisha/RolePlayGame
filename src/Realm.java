@@ -18,7 +18,7 @@ public class Realm {
         }
     }
 
-    private static void command(String string) throws IOException {
+    public static void command(String string) throws IOException {
         if (player == null) {
             player = new Hero(string, 100, 0, 20, 0, 20);
             System.out.printf("Спасти наш мир от драконов вызвался %s!" +
@@ -26,25 +26,27 @@ public class Realm {
             printNavigation();
         }
         switch (string) {
-            case "1" -> {
-                System.out.println("Что-будем покупать?");
-              switch (br.readLine()){
-
-              }
+            case "1" -> System.out.println("Купим  " + Seller.Goods.POTIONS + "  стоит 30 монет, дает 50 Xp или нападаем?(купим/нападаем)");
+            case "купим" -> Seller.sell( player);
+            case "нападаем" -> {
+                return;
             }
             case "2" -> goAndFight();
             case "3" -> System.exit(1);
-
             case "да" -> command("2");
-
             case "нет" -> {
-            printNavigation();
-            command(br.readLine());
-        }
-    }
 
-    command(br.readLine());
-}
+                printNavigation();
+                command(br.readLine());
+            }
+//            case default -> {
+//                System.out.println("Не понимаю, давай сначала");
+//                printNavigation();
+//                command(br.readLine());
+//            }
+        }
+        command(br.readLine());
+    }
 
     private static void goAndFight() {
         battle.fight(createMonster(), player, new FightCallback() {
@@ -65,9 +67,11 @@ public class Realm {
             }
         });
     }
-public static Entity createFightSeller(){
+
+    public static Entity createFightSeller() {
         return new Seller("Торговец", 200, 500, 50, 100, 100);
-}
+    }
+
     public static Entity createMonster() {
         int random = (int) (Math.random() * 10);
         if (random % 10 == 0) {
@@ -84,9 +88,8 @@ public static Entity createFightSeller(){
         System.out.println("3. Выходим");
     }
 
-public interface FightCallback {
-    void winFight();
-
-    void lostFight();
-}
+    public interface FightCallback {
+        void winFight();
+        void lostFight();
+    }
 }
