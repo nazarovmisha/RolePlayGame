@@ -18,7 +18,7 @@ public class Realm {
         }
     }
 
-    public static void command(String string) throws IOException {
+    public static void command(String string) {
         if (player == null) {
             player = new Hero(string, 100, 0, 20, 0, 20);
             System.out.printf("Спасти наш мир от драконов вызвался %s!" +
@@ -26,26 +26,47 @@ public class Realm {
             printNavigation();
         }
         switch (string) {
-            case "1" -> System.out.println("Купим  " + Seller.Goods.POTIONS + "  стоит 30 монет, дает 50 Xp или нападаем?(купим/нападаем)");
-            case "купим" -> Seller.sell( player);
+            case "1" ->
+                    System.out.println("Купим  " + Seller.Goods.POTIONS + "  стоит 30 монет, дает 50 Xp или нападаем?(купим/нападаем)");
+            case "купим" -> {
+                if (player.getGold() >= 30) {
+                    try {
+                        Seller.sell(player);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    System.out.printf("У тебя %s монет, для покупки не хватает %n" + (30 - player.getGold())
+                            + "монет", player.getGold());
+                    System.out.println("В город или нападем(в город/нападем)?");
+                }
+            }
+
+            case "в город", "нет" -> {
+                printNavigation();
+                try {
+                    command(br.readLine());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             case "нападаем" -> {
                 return;
             }
             case "2" -> goAndFight();
             case "3" -> System.exit(1);
             case "да" -> command("2");
-            case "нет" -> {
-
-                printNavigation();
-                command(br.readLine());
-            }
-//            case default -> {
+            //            case default -> {
 //                System.out.println("Не понимаю, давай сначала");
 //                printNavigation();
 //                command(br.readLine());
 //            }
         }
-        command(br.readLine());
+        try {
+            command(br.readLine());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void goAndFight() {
@@ -90,6 +111,7 @@ public class Realm {
 
     public interface FightCallback {
         void winFight();
+
         void lostFight();
     }
 }
